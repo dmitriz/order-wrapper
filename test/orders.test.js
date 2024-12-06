@@ -1,7 +1,7 @@
 const test = require('ava');
 const axios = require('axios');
 const sinon = require('sinon');
-const { createOrder } = require('../src/binance');
+const { createNewOrder } = require('../src/binance');
 
 test.beforeEach(t => {
   t.context.sandbox = sinon.createSandbox();
@@ -12,7 +12,7 @@ test.afterEach.always(t => {
   t.context.sandbox.restore();
 });
 
-test('createOrder should create a new order successfully', async t => {
+test('createNewOrder should create a new order successfully', async t => {
   const apiKey = 'testApiKey';
   const apiSecret = 'testApiSecret';
   const symbol = 'BTCUSDT';
@@ -24,12 +24,12 @@ test('createOrder should create a new order successfully', async t => {
   const responseData = { orderId: 12345 };
   t.context.axiosPostStub.resolves({ data: responseData });
 
-  const result = await createOrder(apiKey, apiSecret, symbol, side, type, quantity, price);
+  const result = await createNewOrder(apiKey, apiSecret, symbol, side, type, quantity, price);
 
   t.deepEqual(result, responseData);
 });
 
-test('createOrder should throw an error if the order creation fails', async t => {
+test('createNewOrder should throw an error if the order creation fails', async t => {
   const apiKey = 'testApiKey';
   const apiSecret = 'testApiSecret';
   const symbol = 'BTCUSDT';
@@ -40,7 +40,7 @@ test('createOrder should throw an error if the order creation fails', async t =>
 
   t.context.axiosPostStub.rejects(new Error('Order creation failed'));
 
-  const error = await t.throwsAsync(() => createOrder(apiKey, apiSecret, symbol, side, type, quantity, price));
+  const error = await t.throwsAsync(() => createNewOrder(apiKey, apiSecret, symbol, side, type, quantity, price));
 
   t.is(error.message, 'Failed to create order: Order creation failed');
 });
