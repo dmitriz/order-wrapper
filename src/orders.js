@@ -1,7 +1,7 @@
 const axios = require('axios');
 const crypto = require('crypto');
 
-async function createOrder(apiKey, apiSecret, symbol, side, type, quantity, price) {
+async function createNewOrder(apiKey, apiSecret, symbol, side, type, quantity, price) {
   const endpoint = 'https://api.binance.com/api/v3/order';
   const timestamp = Date.now();
   const data = {
@@ -34,5 +34,5 @@ function generateSignature(secret, data) {
 }
 
 module.exports = {
-  createOrder,
+  createNewOrder,
 };
